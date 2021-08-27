@@ -44,8 +44,4 @@ ReactDOM.render(
     document.getElementById("root")
 );
 
-// ---------------------------------------------------------------------------------------------------------------------
-// TODO (mpo) ongoing: iFrame: releasing => explain in the README.md how to ensure build all projects are OK !!!
-// TODO (mpo) ongoing: iFrame: make an official alpha-11 release w/ this new Github project
-
 

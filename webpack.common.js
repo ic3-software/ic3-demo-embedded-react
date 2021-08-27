@@ -6,7 +6,7 @@ module.exports = {
     entry: "./src/index.tsx",
 
     output: {
-        chunkFilename: '[name]-chunk.js?t=' + new Date().getTime(),
+        chunkFilename: '[name]-chunk.js?t=' + new Date().getTime() /* cache busting */,
     },
 
     resolve: {
@@ -56,6 +56,7 @@ module.exports = {
 
         new HtmlWebpackPlugin({
             template: "./public/index.html",
+            hash: true,
         }),
 
     ],
