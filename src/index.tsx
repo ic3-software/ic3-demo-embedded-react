@@ -1,9 +1,9 @@
 import * as React from "react";
 import ReactDOM from 'react-dom';
-import {createTheme, CssBaseline, ThemeProvider} from "@material-ui/core";
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import HostApplication from "./HostApplication";
 
-import './index.css';
+import "./index.css";
 
 const theme = createTheme({
 

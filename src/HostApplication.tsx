@@ -1,12 +1,12 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {Button, ButtonGroup, Theme, Typography} from "@material-ui/core";
-import {createStyles, makeStyles} from "@material-ui/styles";
+import {Button, ButtonGroup, Theme, Typography} from "@mui/material";
+import {createStyles, makeStyles} from "@mui/styles";
 import {IReportDefinition, IReporting, IReportParam} from '@ic3/reporting-api';
 import {DashboardsFrame} from "./DashboardsFrame";
-import {DASHBOARD_SALES} from "./SalesDashboard";
-import {DASHBOARD_DONUTS} from "./DonutsDashboard";
-import {DASHBOARD_FILTER} from "./FilterDashboard";
-import {DASHBOARD_QUERIES} from "./QueriesDashboard";
+import {DASHBOARD_1_WAY} from "./Dashboard1way";
+import {DASHBOARD_1_WAY_DYNAMIC_QUERY} from "./Dashboard1wayDynamicQuery";
+import {DASHBOARD_2_WAY} from "./Dashboard2way";
+import {DASHBOARD_2_WAY_FILTER_SYNC} from "./Dashboard2wayFilterSync";
 
 const styles = (theme: Theme) => createStyles({
 
@@ -101,7 +101,12 @@ export interface IDashboardInfo {
 
 }
 
-const DASHBOARDS: IDashboardInfo[] = [DASHBOARD_DONUTS, DASHBOARD_SALES, DASHBOARD_FILTER, DASHBOARD_QUERIES];
+const DASHBOARDS: IDashboardInfo[] = [
+    DASHBOARD_1_WAY,
+    DASHBOARD_1_WAY_DYNAMIC_QUERY,
+    DASHBOARD_2_WAY,
+    DASHBOARD_2_WAY_FILTER_SYNC,
+];
 
 const TIMESTAMP = new Date().getTime();
 
@@ -113,6 +118,15 @@ export default function HostApplication() {
     const [reporting, setReporting] = useState<IReporting>();
 
     const [reportDef, setReportDef] = useState<IReportDefinition | null>();
+
+    const handlePrintDashboard = useCallback(() => {
+
+        return () => {
+
+            reporting?.fireAppNotification({type: "print-report-dialog"});
+        }
+
+    }, [reporting]);
 
     const handleOpenDashboard = useCallback((path: string, params?: IReportParam[]) => {
 
@@ -172,15 +186,26 @@ export default function HostApplication() {
                 })}
             </ButtonGroup>
 
+            <ButtonGroup style={{paddingLeft: "16px"}} size={"medium"} variant={"text"}>
+                <Button disabled={!reporting || !reportDef} variant={"outlined"} onClick={handlePrintDashboard()}>
+                    {"Print Report"}
+                </Button>
+            </ButtonGroup>
+
         </div>
 
-    ), [handleOpenDashboard, classes.buttons, reporting, reportDef]);
+    ), [handleOpenDashboard, handlePrintDashboard, classes.buttons, reporting, reportDef]);
 
     const dashboardInfo = reportDef ? (
 
-        <Typography variant={"body2"} color={"primary"}>
-            {reportDef.getName()}
-        </Typography>
+        <>
+            <Typography variant={"body2"} color={"primary"}>
+                {"name: " + reportDef.getName()}
+            </Typography>
+            <Typography variant={"body2"} color={"primary"}>
+                {"path: " + reportDef.getPath()}
+            </Typography>
+        </>
 
     ) : reporting ? (
 

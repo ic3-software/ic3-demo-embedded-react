@@ -26,7 +26,7 @@ bunch of dashboards available @ `livedemo.icCube.com`. See the self explained co
 
 ### Documentation
 
-See this [page](https://github.com/iccube-software/ic3-reporting-api/blob/main/doc/embed/Overview.md)
+See this [page](https://github.com/ic3-software/ic3-reporting-api/blob/main/doc/embed/Overview.md)
 for a detailed documentation of the API.
 
 _

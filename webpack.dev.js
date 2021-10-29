@@ -22,6 +22,10 @@ module.exports = merge(common, {
         port: 4100,
         open: true,
 
+        client: {
+            overlay: false,
+        },
+
     },
 
     plugins: [
