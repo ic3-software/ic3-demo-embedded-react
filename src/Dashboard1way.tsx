@@ -1,4 +1,4 @@
-import {IDashboardInfo} from "./HostApplication";
+import {IDashboardInfo} from "./DemoStandaloneDashboards";
 
 /**
  * One way communication: Host => icCube

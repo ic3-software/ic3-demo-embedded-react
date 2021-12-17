@@ -3,7 +3,10 @@
 A working example for embedding an icCube Dashboards instance via an iFrame.
 
 This example is showing how to use the icCube Dashboards API to drive the icCube Dashboards instance from a host
-Javascript/Typescript application.
+Javascript/Typescript application:
+
+- open standalone dashboards,
+- open a dashboard application (e.g., global filter) and dashboards.
 
 ### Getting Started
 
@@ -19,10 +22,12 @@ The `package.json` file is containing common scripts:
 
     start : start a Webpack dev. server listening @4100 
 
-### Debug
+### Develop
 
 This example starts a host application @ `localhost:4100` (see `webpack.dev.js` file) that is embedding and driving a
-bunch of dashboards available @ `livedemo.icCube.com`. See the self explained code for more details.
+bunch of dashboards available @ `livedemo.icCube.com` via an HTTP proxy setup in `webpack.dev.js`.
+
+See the self explained code for more details about using the public API.
 
 ### Documentation
 

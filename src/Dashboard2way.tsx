@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from 'react';
-import {IDashboardInfo, IDashboardInteractionProps} from "./HostApplication";
+import {IDashboardInfo, IDashboardInteractionProps} from "./DemoStandaloneDashboards";
 import {createStyles, makeStyles} from "@mui/styles";
 import {Autocomplete, TextField, Theme, Typography} from "@mui/material";
 import {IEventContent, IReporting} from '@ic3/reporting-api';

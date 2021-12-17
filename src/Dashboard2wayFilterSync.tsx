@@ -1,5 +1,5 @@
 import React, {useMemo, useState} from 'react';
-import {IDashboardInfo, IDashboardInteractionProps} from "./HostApplication";
+import {IDashboardInfo, IDashboardInteractionProps} from "./DemoStandaloneDashboards";
 import {createStyles, makeStyles} from "@mui/styles";
 import {Autocomplete, TextField, Theme} from "@mui/material";
 import {CONTINENT_NAMES, handleContinents} from "./Dashboard2way";

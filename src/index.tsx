@@ -1,9 +1,8 @@
+import "./index.css";
 import * as React from "react";
 import ReactDOM from 'react-dom';
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
-import HostApplication from "./HostApplication";
-
-import "./index.css";
+import HostApplicationMain from "./HostApplicationMain";
 
 const theme = createTheme({
 
@@ -37,7 +36,7 @@ ReactDOM.render(
         <>
             <CssBaseline/>
             <ThemeProvider theme={theme}>
-                <HostApplication/>
+                <HostApplicationMain/>
             </ThemeProvider>
         </>
     ),
