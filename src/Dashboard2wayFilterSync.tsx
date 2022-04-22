@@ -84,8 +84,8 @@ export const DASHBOARD_2_WAY_FILTER_SYNC: IDashboardInfo = {
         {
             channelName: "continent",
             value: [
-                {caption: "Asia", name: "Asia", uniqueName: "[Asia]"},
-                {caption: "Europe", name: "Europe", uniqueName: "[Europe]"},
+                {caption: "Asia", name: "Asia", uniqueName: "[Geography].[Geography].[Continent].&[AS]"},
+                {caption: "Europe", name: "Europe", uniqueName: "[Geography].[Geography].[Continent].&[EU]"},
             ]
         }
     ],
