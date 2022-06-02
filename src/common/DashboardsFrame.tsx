@@ -8,16 +8,6 @@ interface DashboardsFrame {
      */
     containerId: string;
 
-    /**
-     * Optional CSS class of the created iFrame.
-     */
-    className?: string;
-
-    /**
-     * Optional CSS inline styling of the created iFrame.
-     */
-    style?: Partial<CSSStyleDeclaration>;
-
     onReady: (ic3: IReporting) => void;
 
     url: string;
@@ -26,13 +16,13 @@ interface DashboardsFrame {
 
 export function DashboardsFrame(props: DashboardsFrame) {
 
-    const {containerId, className, style, onReady, url} = props;
+    const {containerId, onReady, url} = props;
 
     useEffect(() => {
 
-        DashboardsLoaderFrame({containerId, className, style, onReady, url});
+        DashboardsLoaderFrame({containerId, onReady, url});
 
-    }, [containerId, className, style, onReady, url]);
+    }, [containerId, onReady, url]);
 
     return <div id={containerId} style={{width: "100%", height: "100%"}}/>;
 }

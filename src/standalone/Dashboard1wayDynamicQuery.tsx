@@ -1,20 +1,14 @@
 import React from 'react';
-import {IDashboardInfo, IDashboardInteractionProps} from "./DemoStandaloneDashboards";
-import {createStyles, makeStyles} from "@mui/styles";
-import {Autocomplete, TextField, Theme} from "@mui/material";
+import {IDashboardInfo, IDashboardInteractionProps} from "./DemoDashboards";
+import {Autocomplete, TextField} from "@mui/material";
+import {styled} from "@mui/material/styles";
 
-const styles = (theme: Theme) => createStyles({
+const StyledDiv = styled("div")(({theme}) => ({
 
-    root: {
+    paddingTop: theme.spacing(4),
+    color: theme.palette.text.primary,
 
-        paddingTop: theme.spacing(4),
-        color: theme.palette.text.primary,
-
-    },
-
-});
-
-const useStyles = makeStyles(styles);
+}));
 
 export const QUERIES_NAME = [
 
@@ -41,12 +35,10 @@ export const QUERIES_MDX = [
 
 function Interactions(props: IDashboardInteractionProps) {
 
-    const classes = useStyles();
-
     const {reporting} = props;
 
     return (
-        <div className={classes.root}>
+        <StyledDiv>
 
             <Autocomplete
 
@@ -73,7 +65,7 @@ function Interactions(props: IDashboardInteractionProps) {
                 }}
             />
 
-        </div>
+        </StyledDiv>
     );
 }
 

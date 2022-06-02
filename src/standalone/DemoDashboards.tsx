@@ -1,40 +1,39 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {Button, ButtonGroup, Theme, Typography} from "@mui/material";
-import {createStyles, makeStyles} from "@mui/styles";
+import {Button, ButtonGroup, Typography} from "@mui/material";
 import {IReportDefinition, IReporting, IReportParam} from '@ic3/reporting-api';
-import {DashboardsFrame} from "./DashboardsFrame";
 import {DASHBOARD_1_WAY} from "./Dashboard1way";
 import {DASHBOARD_1_WAY_DYNAMIC_QUERY} from "./Dashboard1wayDynamicQuery";
 import {DASHBOARD_2_WAY} from "./Dashboard2way";
 import {DASHBOARD_2_WAY_FILTER_SYNC} from "./Dashboard2wayFilterSync";
+import {DashboardsDiv} from "../common/DashboardsDiv";
+import {DashboardsFrame} from "../common/DashboardsFrame";
+import {styled} from "@mui/material/styles";
+import EmbeddedTypeSwitch, {EmbeddedType} from "../common/EmbeddedTypeSwitch";
 
-const styles = (theme: Theme) => createStyles({
+const StyledDiv = styled("div")(({theme}) => ({
 
-    root: {
+    position: "relative",
 
-        position: "relative",
+    width: "100%",
+    height: "100%",
 
-        width: "100%",
-        height: "100%",
+    backgroundColor: theme.palette.background.paper,
 
-        backgroundColor: theme.palette.background.paper,
+    display: "flex",
+    flexDirection: "column",
 
-        display: "flex",
-        flexDirection: "column",
-
-    },
-
-    doc: {
+    "& .dashboard-doc": {
 
         display: "flex",
         flexDirection: "row",
+        alignItems: "center",
 
         padding: theme.spacing(4),
         color: theme.palette.text.primary,
 
     },
 
-    buttons: {
+    "& .dashboard-buttons": {
 
         display: "flex",
         flexDirection: "row",
@@ -45,7 +44,7 @@ const styles = (theme: Theme) => createStyles({
 
     },
 
-    payload: {
+    "& .dashboard-payload": {
 
         flex: 1,
         overflow: "hidden",
@@ -55,7 +54,7 @@ const styles = (theme: Theme) => createStyles({
 
     },
 
-    interactions: {
+    "& .dashboard-interactions": {
 
         overflow: "hidden",
 
@@ -69,7 +68,7 @@ const styles = (theme: Theme) => createStyles({
 
     },
 
-    dashboards: {
+    "& .dashboard-dashboards": {
 
         flex: 1,
         overflow: "hidden",
@@ -78,9 +77,7 @@ const styles = (theme: Theme) => createStyles({
 
     },
 
-});
-
-const useStyles = makeStyles(styles);
+}));
 
 export interface IDashboardInteractionProps {
 
@@ -110,9 +107,7 @@ const DASHBOARDS: IDashboardInfo[] = [
 
 const TIMESTAMP = new Date().getTime();
 
-export default function DemoStandaloneDashboards() {
-
-    const classes = useStyles();
+export default function DemoDashboards() {
 
     // The icCube dashboards application as a IReporting instance.
     const [reporting, setReporting] = useState<IReporting>();
@@ -137,12 +132,12 @@ export default function DemoStandaloneDashboards() {
                 path, params,
 
                 onDefinition: (report: IReportDefinition) => {
-                    console.log("[iFrame] open-report:" + report.getPath());
+                    console.log("[ic3-demo] open-report:" + report.getPath());
                     setReportDef(report);
                 },
 
                 onError: (error) => {
-                    console.log("[iFrame] open-report:error", error);
+                    console.log("[ic3-demo] open-report:error", error);
                     setReportDef(null);
                     return true /* handled */;
                 }
@@ -151,25 +146,23 @@ export default function DemoStandaloneDashboards() {
 
     }, [reporting]);
 
-    const version = reporting ? ("v" + reporting.getVersion().getInfo()) : "loading...";
+    const [version, setVersion] = useState<string>("loading...");
+    const [embeddedType, setEmbeddedType] = useState<EmbeddedType>("div");
 
     const introduction = useMemo(() => (
 
-        <div className={classes.doc}>
+        <EmbeddedTypeSwitch className={"dashboard-doc"} type={embeddedType} version={version} onTypeChange={type => {
 
-            <Typography variant={"body2"}>
-                {"This application is demonstrating how to embed (and drive) icCube dashboards via an iFrame"}
-            </Typography>
-            <Typography variant={"body2"} color={"primary"} style={{paddingLeft: "10px"}}>
-                {version}
-            </Typography>
+            setVersion("loading...");
+            setReportDef(null);
+            setEmbeddedType(type);
 
-        </div>
+        }}/>
 
-    ), [classes.doc, version]);
+    ), [embeddedType, setEmbeddedType, version]);
 
     const buttons = useMemo(() => (
-        <div className={classes.buttons}>
+        <div className={"dashboard-buttons"}>
 
             <ButtonGroup size={"medium"} variant={"text"}>
                 {DASHBOARDS.map((report, index) => {
@@ -194,16 +187,16 @@ export default function DemoStandaloneDashboards() {
 
         </div>
 
-    ), [handleOpenDashboard, handlePrintDashboard, classes.buttons, reporting, reportDef]);
+    ), [handleOpenDashboard, handlePrintDashboard, reporting, reportDef]);
 
     const dashboardInfo = reportDef ? (
 
         <>
             <Typography variant={"body2"} color={"primary"}>
-                {"name: " + reportDef.getName()}
+                {reportDef.getName()}
             </Typography>
             <Typography variant={"body2"} color={"primary"}>
-                {"path: " + reportDef.getPath()}
+                {reportDef.getPath()}
             </Typography>
         </>
 
@@ -215,16 +208,25 @@ export default function DemoStandaloneDashboards() {
 
     ) : null;
 
-    // Using an icCube FORM auth. w/ ic3demo activated for the sake of simplicity (this way no username/password
-    // is being requested: the demo user - ic3demo configuration - is being used instead). Check the webpack.dev.js
-    // reverse proxy configuration (livedemo.icCube.com) to prevent any CORS issue.
+    // In a production environment the user would be authenticated by the host application and
+    // a HTTP reverse proxy would be taking care of passing credentials to icCube.
 
-    const url = "/icCube/report/viewer?ic3nocache=" + TIMESTAMP + "&ic3demo=";
+    // But for the sake of simplicity and to make it work easily w/ the Webpack dev. server,
+    // icCube is being configured to accept ?ic3demo URL parameter meaning the ic3demo user
+    // is going to be used.
+
+    // Check the webpack.dev.js reverse proxy configuration (livedemo.icCube.com) to prevent
+    // any CORS issue.
+
+    const iFrameUrl = "/icCube/report/viewer?ic3nocache=" + TIMESTAMP + "&ic3demo=";
+    const iFrameBased = (embeddedType !== 'div');
 
     const ic3ready = useCallback((ic3: IReporting) => {
 
-        console.log("[iFrame] ic3ready : ", ic3);
+        console.log("[ic3-demo] ic3ready : ", ic3);
+
         setReporting(ic3);
+        setVersion("v" + ic3.getVersion().getInfo());
 
     }, []);
 
@@ -242,24 +244,29 @@ export default function DemoStandaloneDashboards() {
     }, [reporting, reportName]);
 
     return (
-        <div className={classes.root}>
+        <StyledDiv>
 
             {introduction}
             {buttons}
 
-            <div className={classes.payload}>
+            <div className={"dashboard-payload"}>
 
-                <div className={classes.interactions}>
+                <div className={"dashboard-interactions"}>
                     {dashboardInfo}
                     {dashboardInteractions}
                 </div>
 
-                <div className={classes.dashboards}>
-                    <DashboardsFrame containerId={"ic3dashboards"} onReady={ic3ready} url={url}/>
-                </div>
+                {
+                    iFrameBased ?
+                        <div className={"dashboard-dashboards"}>
+                            <DashboardsFrame containerId={"ic3-dashboards"} onReady={ic3ready} url={iFrameUrl}/>
+                        </div>
+                        :
+                        <DashboardsDiv className={"dashboard-dashboards"} uid={"ic3-demo"} onReady={ic3ready}/>
+                }
 
             </div>
-        </div>
+        </StyledDiv>
     );
 
 }

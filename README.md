@@ -1,12 +1,13 @@
-## ic3 Dashboards Integration (iFrame)
+## ic3 Dashboards Integration
 
-A working example for embedding an icCube Dashboards instance via an iFrame.
+A working example for embedding an icCube Dashboards instance via an iFrame or a DIV.
 
 This example is showing how to use the icCube Dashboards API to drive the icCube Dashboards instance from a host
 Javascript/Typescript application:
 
 - open standalone dashboards,
-- open a dashboard application (e.g., global filter) and dashboards.
+- open a dashboard application (e.g., global filter) and dashboards,
+- open two dashboards that communicate to each other via events.
 
 ### Getting Started
 

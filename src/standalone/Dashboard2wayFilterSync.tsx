@@ -1,25 +1,18 @@
 import React, {useMemo, useState} from 'react';
-import {IDashboardInfo, IDashboardInteractionProps} from "./DemoStandaloneDashboards";
-import {createStyles, makeStyles} from "@mui/styles";
-import {Autocomplete, TextField, Theme} from "@mui/material";
+import {IDashboardInfo, IDashboardInteractionProps} from "./DemoDashboards";
+import {Autocomplete, TextField} from "@mui/material";
 import {CONTINENT_NAMES, handleContinents} from "./Dashboard2way";
+import {styled} from "@mui/material/styles";
 
-const styles = (theme: Theme) => createStyles({
+const StyledDiv = styled("div")(({theme}) => ({
 
-    root: {
+    paddingTop: theme.spacing(4),
 
-        paddingTop: theme.spacing(4),
+}));
 
-    },
-
-
-});
-
-const useStyles = makeStyles(styles);
 
 function Interactions(props: IDashboardInteractionProps) {
 
-    const classes = useStyles();
 
     const {reporting} = props;
 
@@ -29,7 +22,7 @@ function Interactions(props: IDashboardInteractionProps) {
 
         reporting.onEvent("continent", (value) => {
 
-            console.log("[iFrame] onEvent(continent)", value);
+            console.log("[ic3-demo] onEvent(continent)", value);
 
             let continentNames: string[] = [] /* multi does not like null value */;
 
@@ -47,7 +40,7 @@ function Interactions(props: IDashboardInteractionProps) {
 
 
     return (
-        <div className={classes.root}>
+        <StyledDiv>
 
             <Autocomplete
 
@@ -63,7 +56,7 @@ function Interactions(props: IDashboardInteractionProps) {
 
             />
 
-        </div>
+        </StyledDiv>
     );
 }
 

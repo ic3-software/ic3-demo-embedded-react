@@ -1,30 +1,26 @@
 import React, {useMemo, useState} from 'react';
-import {IDashboardInfo, IDashboardInteractionProps} from "./DemoStandaloneDashboards";
-import {createStyles, makeStyles} from "@mui/styles";
-import {Autocomplete, TextField, Theme, Typography} from "@mui/material";
+import {IDashboardInfo, IDashboardInteractionProps} from "./DemoDashboards";
+import {styled} from "@mui/material/styles";
+import {Autocomplete, TextField, Typography} from "@mui/material";
 import {IEventContent, IReporting} from '@ic3/reporting-api';
 
-const styles = (theme: Theme) => createStyles({
+const StyledDiv = styled("div")(({theme}) => ({
 
-    root: {
+    flex: 1,
 
-        flex: 1,
+    display: "flex",
+    flexDirection: "column",
 
-        display: "flex",
-        flexDirection: "column",
+    paddingTop: theme.spacing(4),
+    color: theme.palette.text.primary,
 
-        paddingTop: theme.spacing(4),
-        color: theme.palette.text.primary,
-
-    },
-
-    years: {
+    "& .two-way-year": {
 
         paddingTop: theme.spacing(4),
 
     },
 
-    yearsContent: {
+    "& .two-way-year-content": {
 
         flex: 1,
 
@@ -32,9 +28,7 @@ const styles = (theme: Theme) => createStyles({
 
     },
 
-});
-
-const useStyles = makeStyles(styles);
+}));
 
 export const CONTINENT_NAMES = ["Africa", "Asia", "Europe", "North America", "Oceania", "South America"];
 
@@ -69,7 +63,7 @@ export function handleContinents(setContinents: any, reporting: IReporting, cont
 
     }
 
-    console.log("[iFrame] fireEvent(continent)", value);
+    console.log("[ic3-demo] fireEvent(continent)", value);
 
     reporting.fireEvent("continent", value);
     setContinents(continents);
@@ -77,8 +71,6 @@ export function handleContinents(setContinents: any, reporting: IReporting, cont
 }
 
 function Interactions(props: IDashboardInteractionProps) {
-
-    const classes = useStyles();
 
     const {reporting} = props;
 
@@ -92,8 +84,7 @@ function Interactions(props: IDashboardInteractionProps) {
     }, [reporting]);
 
     return (
-        <div className={classes.root}>
-
+        <StyledDiv>
             <Autocomplete
 
                 multiple fullWidth size={"small"} options={CONTINENT_NAMES} value={continents}
@@ -108,18 +99,18 @@ function Interactions(props: IDashboardInteractionProps) {
 
             />
 
-            <div className={classes.years}>
+            <div className={"two-way-year"}>
                 <Typography variant={"body2"}>{"Selected Year(s) from the Dashboard:"}</Typography>
             </div>
 
-            <div className={classes.yearsContent}>
+            <div className={"two-way-year-content"}>
                 {years && <iframe
                     style={{border: "0px none", width: "100%", height: "100%"}}
                     src={"https://en.m.wikipedia.org/wiki/" + years[0].name}
                 />}
             </div>
-        </div>
-    );
+        </StyledDiv>
+    )
 }
 
 /**

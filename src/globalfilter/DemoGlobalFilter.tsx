@@ -1,37 +1,36 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {Button, ButtonGroup, Theme, Typography} from "@mui/material";
-import {createStyles, makeStyles} from "@mui/styles";
+import {Button, ButtonGroup} from "@mui/material";
 import {IReportAppDefinition, IReportDefinition, IReporting, IReportParam} from '@ic3/reporting-api';
-import {DashboardsFrame} from "./DashboardsFrame";
-import {IDashboardInfo} from "./DemoStandaloneDashboards";
+import {IDashboardInfo} from "../standalone/DemoDashboards";
+import {DashboardsDiv} from "../common/DashboardsDiv";
+import {styled} from "@mui/material/styles";
+import EmbeddedTypeSwitch, {EmbeddedType} from "../common/EmbeddedTypeSwitch";
+import {DashboardsFrame} from "../common/DashboardsFrame";
 
-const styles = (theme: Theme) => createStyles({
+const StyledDiv = styled("div")(({theme}) => ({
 
-    root: {
+    position: "relative",
 
-        position: "relative",
+    width: "100%",
+    height: "100%",
 
-        width: "100%",
-        height: "100%",
+    backgroundColor: theme.palette.background.paper,
 
-        backgroundColor: theme.palette.background.paper,
+    display: "flex",
+    flexDirection: "column",
 
-        display: "flex",
-        flexDirection: "column",
-
-    },
-
-    doc: {
+    "& .g-filter-doc": {
 
         display: "flex",
         flexDirection: "row",
+        alignItems: "center",
 
         padding: theme.spacing(4),
         color: theme.palette.text.primary,
 
     },
 
-    buttons: {
+    "& .g-filter-buttons": {
 
         display: "flex",
         flexDirection: "row",
@@ -42,31 +41,7 @@ const styles = (theme: Theme) => createStyles({
 
     },
 
-    payload: {
-
-        flex: 1,
-        overflow: "hidden",
-
-        display: "flex",
-        flexDirection: "row",
-
-    },
-
-    interactions: {
-
-        overflow: "hidden",
-
-        width: "384px",
-        height: "100%",
-
-        padding: theme.spacing(4),
-
-        display: "flex",
-        flexDirection: "column",
-
-    },
-
-    dashboards: {
+    "& .g-filter-payload": {
 
         flex: 1,
         overflow: "hidden",
@@ -75,9 +50,8 @@ const styles = (theme: Theme) => createStyles({
 
     },
 
-});
+}));
 
-const useStyles = makeStyles(styles);
 
 const DASHBOARDS: IDashboardInfo[] = [
     {
@@ -106,13 +80,10 @@ const TIMESTAMP = new Date().getTime();
 
 export default function DemoGlobalFilter() {
 
-    const classes = useStyles();
-
     // The icCube dashboards application as a IReporting instance.
     const [reporting, setReporting] = useState<IReporting>();
-    const [appDef, setAppDef] = useState<IReportAppDefinition>();
 
-    const version = reporting ? ("v" + reporting.getVersion().getInfo()) : "loading...";
+    const [appDef, setAppDef] = useState<IReportAppDefinition | null>();
 
     const handleOpenDashboard = useCallback((path: string, params?: IReportParam[]) => {
 
@@ -123,11 +94,11 @@ export default function DemoGlobalFilter() {
                 path, params,
 
                 onDefinition: (report: IReportDefinition) => {
-                    console.log("[iFrame] open-report:" + report.getPath());
+                    console.log("[ic3-demo] open-report:" + report.getPath());
                 },
 
                 onError: (error) => {
-                    console.log("[iFrame] open-report:error", error);
+                    console.log("[ic3-demo] open-report:error", error);
                     return true /* handled */;
                 }
             });
@@ -135,23 +106,23 @@ export default function DemoGlobalFilter() {
 
     }, [reporting]);
 
+    const [version, setVersion] = useState<string>("loading...");
+    const [embeddedType, setEmbeddedType] = useState<EmbeddedType>("div");
+
     const introduction = useMemo(() => (
 
-        <div className={classes.doc}>
+        <EmbeddedTypeSwitch className={"g-filter-doc"} type={embeddedType} version={version} onTypeChange={type => {
 
-            <Typography variant={"body2"}>
-                {"This application is demonstrating how to embed (and drive) icCube application (i.e., global filter) via an iFrame"}
-            </Typography>
-            <Typography variant={"body2"} color={"primary"} style={{paddingLeft: "10px"}}>
-                {version}
-            </Typography>
+            setVersion("loading...");
+            setAppDef(null);
+            setEmbeddedType(type);
 
-        </div>
+        }}/>
 
-    ), [classes.doc, version]);
+    ), [embeddedType, setEmbeddedType, version]);
 
     const buttons = useMemo(() => (
-        <div className={classes.buttons}>
+        <div className={"g-filter-buttons"}>
 
             <ButtonGroup size={"medium"} variant={"text"}>
                 {DASHBOARDS.map((report, index) => {
@@ -170,29 +141,38 @@ export default function DemoGlobalFilter() {
 
         </div>
 
-    ), [handleOpenDashboard, classes.buttons, reporting, appDef]);
+    ), [handleOpenDashboard, reporting, appDef]);
 
-    // Using an icCube FORM auth. w/ ic3demo activated for the sake of simplicity (this way no username/password
-    // is being requested: the demo user - ic3demo configuration - is being used instead). Check the webpack.dev.js
-    // reverse proxy configuration (livedemo.icCube.com) to prevent any CORS issue.
+    // In a production environment the user would be authenticated by the host application and
+    // a HTTP reverse proxy would be taking care of passing credentials to icCube.
 
-    const url = "/icCube/report/viewer?ic3nocache=" + TIMESTAMP + "&ic3demo=";
+    // But for the sake of simplicity and to make it work easily w/ the Webpack dev. server,
+    // icCube is being configured to accept ?ic3demo URL parameter meaning the ic3demo user
+    // is going to be used.
+
+    // Check the webpack.dev.js reverse proxy configuration (livedemo.icCube.com) to prevent
+    // any CORS issue.
+
+    const iFrameUrl = "/icCube/report/viewer?ic3nocache=" + TIMESTAMP + "&ic3demo=";
+    const iFrameBased = (embeddedType !== 'div');
 
     const ic3ready = useCallback((ic3: IReporting) => {
 
-        console.log("[iFrame] ic3ready : ", ic3);
+        console.log("[ic3-demo] ic3ready : ", ic3);
+
         setReporting(ic3);
+        setVersion("v" + ic3.getVersion().getInfo());
 
         ic3.openReportApp({
             path: "shared:/Embedded Global Filter",
 
             onDefinition: (app: IReportAppDefinition) => {
-                console.log("[iFrame] open-app");
+                console.log("[ic3-demo] open-app");
                 setAppDef(app);
             },
 
             onError: (error) => {
-                console.log("[iFrame] open-app:error", error);
+                console.log("[ic3-demo] open-app:error", error);
                 return true /* handled */;
             }
 
@@ -201,19 +181,19 @@ export default function DemoGlobalFilter() {
     }, []);
 
     return (
-        <div className={classes.root}>
+        <StyledDiv>
 
             {introduction}
             {buttons}
 
-            <div className={classes.payload}>
-
-                <div className={classes.dashboards}>
-                    <DashboardsFrame containerId={"ic3dashboards"} onReady={ic3ready} url={url}/>
-                </div>
-
+            <div className={"g-filter-payload"}>
+                {
+                    iFrameBased
+                        ? <DashboardsFrame containerId={"ic3-dashboards"} onReady={ic3ready} url={iFrameUrl}/>
+                        : <DashboardsDiv uid={"ic3-demo-global-filter"} onReady={ic3ready}/>
+                }
             </div>
-        </div>
+        </StyledDiv>
     );
 
 }

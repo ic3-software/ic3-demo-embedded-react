@@ -27,7 +27,15 @@ const theme = createTheme({
             "dark": "rgb(170, 100, 123)",
             "contrastText": "rgba(0, 0, 0, 0.87)"
         },
-    }
+    },
+
+    typography: {
+
+        fontFamily: "Quicksand",
+        fontSize: 16,
+
+    },
+
 
 } as any);
 
