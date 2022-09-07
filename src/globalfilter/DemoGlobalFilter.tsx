@@ -6,6 +6,8 @@ import {DashboardsDiv} from "../common/DashboardsDiv";
 import {styled} from "@mui/material/styles";
 import EmbeddedTypeSwitch, {EmbeddedType} from "../common/EmbeddedTypeSwitch";
 import {DashboardsFrame} from "../common/DashboardsFrame";
+import {HostLogger} from '../HostLogger';
+import {withCustomHeaders} from "../index";
 
 const StyledDiv = styled("div")(({theme}) => ({
 
@@ -19,7 +21,7 @@ const StyledDiv = styled("div")(({theme}) => ({
     display: "flex",
     flexDirection: "column",
 
-    "& .g-filter-doc": {
+    "& .ic3-g-filter-doc": {
 
         display: "flex",
         flexDirection: "row",
@@ -30,7 +32,7 @@ const StyledDiv = styled("div")(({theme}) => ({
 
     },
 
-    "& .g-filter-buttons": {
+    "& .ic3-g-filter-buttons": {
 
         display: "flex",
         flexDirection: "row",
@@ -41,7 +43,7 @@ const StyledDiv = styled("div")(({theme}) => ({
 
     },
 
-    "& .g-filter-payload": {
+    "& .ic3-g-filter-payload": {
 
         flex: 1,
         overflow: "hidden",
@@ -94,11 +96,11 @@ export default function DemoGlobalFilter() {
                 path, params,
 
                 onDefinition: (report: IReportDefinition) => {
-                    console.log("[ic3-demo] open-report:" + report.getPath());
+                    HostLogger.info("Host", "open-report:" + report.getPath());
                 },
 
                 onError: (error) => {
-                    console.log("[ic3-demo] open-report:error", error);
+                    HostLogger.error("Host", "open-report:error", error);
                     return true /* handled */;
                 }
             });
@@ -111,7 +113,7 @@ export default function DemoGlobalFilter() {
 
     const introduction = useMemo(() => (
 
-        <EmbeddedTypeSwitch className={"g-filter-doc"} type={embeddedType} version={version} onTypeChange={type => {
+        <EmbeddedTypeSwitch className={"ic3-g-filter-doc"} type={embeddedType} version={version} onTypeChange={type => {
 
             setVersion("loading...");
             setAppDef(null);
@@ -122,7 +124,7 @@ export default function DemoGlobalFilter() {
     ), [embeddedType, setEmbeddedType, version]);
 
     const buttons = useMemo(() => (
-        <div className={"g-filter-buttons"}>
+        <div className={"ic3-g-filter-buttons"}>
 
             <ButtonGroup size={"medium"} variant={"text"}>
                 {DASHBOARDS.map((report, index) => {
@@ -153,12 +155,15 @@ export default function DemoGlobalFilter() {
     // Check the webpack.dev.js reverse proxy configuration (livedemo.icCube.com) to prevent
     // any CORS issue.
 
-    const iFrameUrl = "/icCube/report/viewer?ic3nocache=" + TIMESTAMP + "&ic3demo=";
+    const ic3configuration = "&ic3configuration=filter";
+    const ic3customHeaders = withCustomHeaders ? "&ic3customHeaders=filter" : "";
+
+    const iFrameUrl = "/icCube/report/viewer?ic3nocache=" + TIMESTAMP + "&ic3demo=" + ic3customHeaders + ic3configuration;
     const iFrameBased = (embeddedType !== 'div');
 
     const ic3ready = useCallback((ic3: IReporting) => {
 
-        console.log("[ic3-demo] ic3ready : ", ic3);
+        HostLogger.info("Host", "ic3ready : ", ic3);
 
         setReporting(ic3);
         setVersion("v" + ic3.getVersion().getInfo());
@@ -167,12 +172,12 @@ export default function DemoGlobalFilter() {
             path: "shared:/Embedded Global Filter",
 
             onDefinition: (app: IReportAppDefinition) => {
-                console.log("[ic3-demo] open-app");
+                HostLogger.info("Host", "open-app");
                 setAppDef(app);
             },
 
             onError: (error) => {
-                console.log("[ic3-demo] open-app:error", error);
+                HostLogger.error("Host", "open-app:error", error);
                 return true /* handled */;
             }
 
@@ -186,10 +191,11 @@ export default function DemoGlobalFilter() {
             {introduction}
             {buttons}
 
-            <div className={"g-filter-payload"}>
+            <div className={"ic3-g-filter-payload"}>
                 {
                     iFrameBased
-                        ? <DashboardsFrame containerId={"ic3-dashboards"} onReady={ic3ready} url={iFrameUrl}/>
+                        ? <DashboardsFrame containerId={"ic3-dashboards"} frameId={"ic3-iframe"} onReady={ic3ready}
+                                           url={iFrameUrl}/>
                         : <DashboardsDiv uid={"ic3-demo-global-filter"} onReady={ic3ready}/>
                 }
             </div>

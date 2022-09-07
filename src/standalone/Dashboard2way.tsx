@@ -3,6 +3,7 @@ import {IDashboardInfo, IDashboardInteractionProps} from "./DemoDashboards";
 import {styled} from "@mui/material/styles";
 import {Autocomplete, TextField, Typography} from "@mui/material";
 import {IEventContent, IReporting} from '@ic3/reporting-api';
+import {HostLogger} from '../HostLogger';
 
 const StyledDiv = styled("div")(({theme}) => ({
 
@@ -14,13 +15,13 @@ const StyledDiv = styled("div")(({theme}) => ({
     paddingTop: theme.spacing(4),
     color: theme.palette.text.primary,
 
-    "& .two-way-year": {
+    "& .ic3-two-way-year": {
 
         paddingTop: theme.spacing(4),
 
     },
 
-    "& .two-way-year-content": {
+    "& .ic3-two-way-year-content": {
 
         flex: 1,
 
@@ -63,7 +64,7 @@ export function handleContinents(setContinents: any, reporting: IReporting, cont
 
     }
 
-    console.log("[ic3-demo] fireEvent(continent)", value);
+    HostLogger.info("Host", "fireEvent(continent)", value);
 
     reporting.fireEvent("continent", value);
     setContinents(continents);
@@ -99,11 +100,11 @@ function Interactions(props: IDashboardInteractionProps) {
 
             />
 
-            <div className={"two-way-year"}>
+            <div className={"ic3-two-way-year"}>
                 <Typography variant={"body2"}>{"Selected Year(s) from the Dashboard:"}</Typography>
             </div>
 
-            <div className={"two-way-year-content"}>
+            <div className={"ic3-two-way-year-content"}>
                 {years && <iframe
                     style={{border: "0px none", width: "100%", height: "100%"}}
                     src={"https://en.m.wikipedia.org/wiki/" + years[0].name}

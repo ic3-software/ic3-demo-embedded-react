@@ -3,6 +3,7 @@ import {IReportDefinition, IReporting} from '@ic3/reporting-api';
 import {DashboardsDiv} from "../common/DashboardsDiv";
 import {styled} from "@mui/material/styles";
 import {Typography} from "@mui/material";
+import {HostLogger} from '../HostLogger';
 
 const StyledDiv = styled("div")(({theme}) => ({
 
@@ -16,14 +17,14 @@ const StyledDiv = styled("div")(({theme}) => ({
     display: "flex",
     flexDirection: "column",
 
-    "& .dashboard-doc": {
+    "& .ic3Dashboard-doc": {
 
         padding: theme.spacing(4),
         color: theme.palette.text.primary,
 
     },
 
-    "& .dashboard-doc-2": {
+    "& .ic3Dashboard-doc-2": {
 
         display: "flex",
         flexDirection: "column",
@@ -33,7 +34,7 @@ const StyledDiv = styled("div")(({theme}) => ({
 
     },
 
-    "& .dashboard-payload": {
+    "& .ic3Dashboard-payload": {
 
         flex: 1,
         overflow: "hidden",
@@ -47,12 +48,12 @@ const StyledDiv = styled("div")(({theme}) => ({
 
     },
 
-    "& .double-div-1": {
+    "& .ic3Double-div-1": {
         height: "100px",
         width: "48%"
     },
 
-    "& .double-div-2": {
+    "& .ic3Double-div-2": {
         height: "100px",
         width: "48%"
     },
@@ -90,11 +91,11 @@ export default function DoubleDiv() {
             path,
 
             onDefinition: (report: IReportDefinition) => {
-                console.log("[ic3-demo] div-1 open-report:" + report.getPath());
+                HostLogger.info("Host", "div-1 open-report:" + report.getPath());
             },
 
             onError: (error) => {
-                console.error("[ic3-demo] div-1 open-report on error:" + error);
+                HostLogger.error("Host", "div-1 open-report on error:" + error);
                 return true;
             }
         });
@@ -113,11 +114,11 @@ export default function DoubleDiv() {
             path,
 
             onDefinition: (report: IReportDefinition) => {
-                console.log("[ic3-demo] div-2 open-report:" + report.getPath());
+                HostLogger.info("Host", "div-2 open-report:" + report.getPath());
             },
 
             onError: (error) => {
-                console.error("[ic3-demo] div-2 open-report on error:" + error);
+                HostLogger.error("Host", "div-2 open-report on error:" + error);
                 return true;
             }
         });
@@ -128,11 +129,11 @@ export default function DoubleDiv() {
 
     return <>
         <StyledDiv>
-            <div className={"dashboard-doc"}>
+            <div className={"ic3Dashboard-doc"}>
                 <Typography variant={"body2"}>
                     {"This application is demonstrating how to embed (and drive) two icCube dashboards and make them communicate to each other:"}
                 </Typography>
-                <div className={"dashboard-doc-2"}>
+                <div className={"ic3Dashboard-doc-2"}>
                     <Typography variant={"body2"}>
                         {"- the chart is firing a country event that is filtering the table."}
                     </Typography>
@@ -141,10 +142,10 @@ export default function DoubleDiv() {
                     </Typography>
                 </div>
             </div>
-            <div className={"dashboard-payload"}>
-                <DashboardsDiv className={"double-div-1"} uid={"ic3-demo-div-one"} onReady={ic3ready1}
+            <div className={"ic3Dashboard-payload"}>
+                <DashboardsDiv className={"ic3Double-div-1"} uid={"ic3-demo-div-one"} onReady={ic3ready1}
                                autoResize={true}/>
-                <DashboardsDiv className={"double-div-2"} uid={"ic3-demo-div-two"} onReady={ic3ready2}
+                <DashboardsDiv className={"ic3Double-div-2"} uid={"ic3-demo-div-two"} onReady={ic3ready2}
                                autoResize={true}/>
             </div>
         </StyledDiv>

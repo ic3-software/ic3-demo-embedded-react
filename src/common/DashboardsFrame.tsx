@@ -8,6 +8,11 @@ interface DashboardsFrame {
      */
     containerId: string;
 
+    /**
+     * E.g., useful when using custom headers from the host application.
+     */
+    frameId: string;
+
     onReady: (ic3: IReporting) => void;
 
     url: string;
@@ -16,13 +21,13 @@ interface DashboardsFrame {
 
 export function DashboardsFrame(props: DashboardsFrame) {
 
-    const {containerId, onReady, url} = props;
+    const {containerId, frameId, onReady, url} = props;
 
     useEffect(() => {
 
-        DashboardsLoaderFrame({containerId, onReady, url});
+        DashboardsLoaderFrame({containerId, frameId, onReady, url});
 
-    }, [containerId, onReady, url]);
+    }, [containerId, frameId, onReady, url]);
 
     return <div id={containerId} style={{width: "100%", height: "100%"}}/>;
 }

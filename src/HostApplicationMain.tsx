@@ -5,6 +5,8 @@ import DemoDashboards from "./standalone/DemoDashboards";
 import {DashboardsDivContext, DashboardsDivReactContext} from "./common/DashboardsDivContext";
 import {styled} from "@mui/material/styles";
 import DoubleDiv from "./doublediv/DoubleDiv";
+import DemoAdmin from './admin/DemoAdmin';
+import {withCustomHeaders} from "./index";
 
 const StyledDiv = styled("div")(({theme}) => ({
 
@@ -21,11 +23,15 @@ const StyledDiv = styled("div")(({theme}) => ({
     alignItems: "center",
 }));
 
-type Demo = "STANDALONE_DASHBOARDS" | "APPLICATION" | "DOUBLE_DIV";
+type Demo = "ADMIN_CONSOLE" | "STANDALONE_DASHBOARDS" | "APPLICATION" | "DOUBLE_DIV";
 
 export default function HostApplicationMain() {
 
     const [demo, setDemo] = useState<Demo>();
+
+    const handleAdminConsoleClick = useCallback(() => {
+        setDemo("ADMIN_CONSOLE");
+    }, []);
 
     const handleStandaloneDashboardsClick = useCallback(() => {
         setDemo("STANDALONE_DASHBOARDS");
@@ -41,7 +47,11 @@ export default function HostApplicationMain() {
 
     const content = useMemo(() => {
 
-        if (demo == "STANDALONE_DASHBOARDS") {
+        if (demo == "ADMIN_CONSOLE") {
+
+            return <DemoAdmin/>;
+
+        } else if (demo == "STANDALONE_DASHBOARDS") {
 
             return <DemoDashboards/>;
 
@@ -86,6 +96,7 @@ export default function HostApplicationMain() {
                             </CardContent>
                         </CardActionArea>
                     </Card>
+
                     <Card sx={{width: 500, margin: 1}}>
                         <CardActionArea onClick={handleDoubleDiv}>
                             <CardContent>
@@ -100,12 +111,25 @@ export default function HostApplicationMain() {
                         </CardActionArea>
                     </Card>
 
+                    <Card sx={{width: 500, margin: 1}}>
+                        <CardActionArea onClick={handleAdminConsoleClick}>
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    Standalone Admin. Console
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    Demonstrate how to open the Admin. console (iFrame).
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
+
                 </StyledDiv>
             );
 
         }
 
-    }, [demo, handleApplicationClick, handleStandaloneDashboardsClick, handleDoubleDiv]);
+    }, [demo, handleApplicationClick, handleStandaloneDashboardsClick, handleDoubleDiv, handleAdminConsoleClick]);
 
     // In a production environment the user would be authenticated by the host application and
     // a HTTP reverse proxy would be taking care of passing credentials to icCube.
@@ -124,7 +148,10 @@ export default function HostApplicationMain() {
     // Setup very early in order to load as early as possible icCube libraries
     // (actually before any icCube rendering is required yet).
 
-    const context = useMemo(() => new DashboardsDivContext(suffix), []);
+    const context = useMemo(() => new DashboardsDivContext({
+        customHeaders: withCustomHeaders ? "dashboards" : undefined,
+        urlSuffix: suffix,
+    }), []);
 
     return <DashboardsDivReactContext.Provider value={context}>
         {content}

@@ -9,6 +9,8 @@ import {DashboardsDiv} from "../common/DashboardsDiv";
 import {DashboardsFrame} from "../common/DashboardsFrame";
 import {styled} from "@mui/material/styles";
 import EmbeddedTypeSwitch, {EmbeddedType} from "../common/EmbeddedTypeSwitch";
+import {HostLogger} from '../HostLogger';
+import {withCustomHeaders} from "../index";
 
 const StyledDiv = styled("div")(({theme}) => ({
 
@@ -22,7 +24,7 @@ const StyledDiv = styled("div")(({theme}) => ({
     display: "flex",
     flexDirection: "column",
 
-    "& .dashboard-doc": {
+    "& .ic3Dashboard-doc": {
 
         display: "flex",
         flexDirection: "row",
@@ -33,7 +35,7 @@ const StyledDiv = styled("div")(({theme}) => ({
 
     },
 
-    "& .dashboard-buttons": {
+    "& .ic3Dashboard-buttons": {
 
         display: "flex",
         flexDirection: "row",
@@ -44,7 +46,7 @@ const StyledDiv = styled("div")(({theme}) => ({
 
     },
 
-    "& .dashboard-payload": {
+    "& .ic3Dashboard-payload": {
 
         flex: 1,
         overflow: "hidden",
@@ -54,7 +56,7 @@ const StyledDiv = styled("div")(({theme}) => ({
 
     },
 
-    "& .dashboard-interactions": {
+    "& .ic3Dashboard-interactions": {
 
         overflow: "hidden",
 
@@ -68,7 +70,7 @@ const StyledDiv = styled("div")(({theme}) => ({
 
     },
 
-    "& .dashboard-dashboards": {
+    "& .ic3Dashboard-dashboards": {
 
         flex: 1,
         overflow: "hidden",
@@ -132,12 +134,12 @@ export default function DemoDashboards() {
                 path, params,
 
                 onDefinition: (report: IReportDefinition) => {
-                    console.log("[ic3-demo] open-report:" + report.getPath());
+                    HostLogger.info("Host", "open-report:" + report.getPath());
                     setReportDef(report);
                 },
 
                 onError: (error) => {
-                    console.log("[ic3-demo] open-report:error", error);
+                    HostLogger.error("Host", "open-report:error", error);
                     setReportDef(null);
                     return true /* handled */;
                 }
@@ -151,7 +153,7 @@ export default function DemoDashboards() {
 
     const introduction = useMemo(() => (
 
-        <EmbeddedTypeSwitch className={"dashboard-doc"} type={embeddedType} version={version} onTypeChange={type => {
+        <EmbeddedTypeSwitch className={"ic3Dashboard-doc"} type={embeddedType} version={version} onTypeChange={type => {
 
             setVersion("loading...");
             setReportDef(null);
@@ -162,7 +164,7 @@ export default function DemoDashboards() {
     ), [embeddedType, setEmbeddedType, version]);
 
     const buttons = useMemo(() => (
-        <div className={"dashboard-buttons"}>
+        <div className={"ic3Dashboard-buttons"}>
 
             <ButtonGroup size={"medium"} variant={"text"}>
                 {DASHBOARDS.map((report, index) => {
@@ -218,12 +220,15 @@ export default function DemoDashboards() {
     // Check the webpack.dev.js reverse proxy configuration (livedemo.icCube.com) to prevent
     // any CORS issue.
 
-    const iFrameUrl = "/icCube/report/viewer?ic3nocache=" + TIMESTAMP + "&ic3demo=";
+    const ic3configuration = "&ic3configuration=dashboards";
+    const ic3customHeaders = withCustomHeaders ? "&ic3customHeaders=dashboards" : "";
+
+    const iFrameUrl = "/icCube/report/viewer?ic3nocache=" + TIMESTAMP + "&ic3demo=" + ic3customHeaders + ic3configuration;
     const iFrameBased = (embeddedType !== 'div');
 
     const ic3ready = useCallback((ic3: IReporting) => {
 
-        console.log("[ic3-demo] ic3ready : ", ic3);
+        HostLogger.info("Host", "ic3ready : ", ic3);
 
         setReporting(ic3);
         setVersion("v" + ic3.getVersion().getInfo());
@@ -249,20 +254,29 @@ export default function DemoDashboards() {
             {introduction}
             {buttons}
 
-            <div className={"dashboard-payload"}>
+            <div className={"ic3Dashboard-payload"}>
 
-                <div className={"dashboard-interactions"}>
+                <div className={"ic3Dashboard-interactions"}>
                     {dashboardInfo}
                     {dashboardInteractions}
                 </div>
 
                 {
-                    iFrameBased ?
-                        <div className={"dashboard-dashboards"}>
-                            <DashboardsFrame containerId={"ic3-dashboards"} onReady={ic3ready} url={iFrameUrl}/>
+                    iFrameBased
+
+                        ? <div className={"ic3Dashboard-dashboards"}>
+                            <DashboardsFrame containerId={"ic3-dashboards"}
+                                             frameId={"ic3-iframe"}
+                                             onReady={ic3ready}
+                                             url={iFrameUrl}
+                            />
                         </div>
-                        :
-                        <DashboardsDiv className={"dashboard-dashboards"} uid={"ic3-demo"} onReady={ic3ready}/>
+
+                        : <DashboardsDiv
+                            className={"ic3Dashboard-dashboards"}
+                            uid={"ic3-demo"}
+                            onReady={ic3ready}
+                        />
                 }
 
             </div>

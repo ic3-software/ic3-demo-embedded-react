@@ -3,6 +3,7 @@ import {IDashboardInfo, IDashboardInteractionProps} from "./DemoDashboards";
 import {Autocomplete, TextField} from "@mui/material";
 import {CONTINENT_NAMES, handleContinents} from "./Dashboard2way";
 import {styled} from "@mui/material/styles";
+import {HostLogger} from '../HostLogger';
 
 const StyledDiv = styled("div")(({theme}) => ({
 
@@ -22,7 +23,7 @@ function Interactions(props: IDashboardInteractionProps) {
 
         reporting.onEvent("continent", (value) => {
 
-            console.log("[ic3-demo] onEvent(continent)", value);
+            HostLogger.info("Host", "onEvent(continent)", value);
 
             let continentNames: string[] = [] /* multi does not like null value */;
 

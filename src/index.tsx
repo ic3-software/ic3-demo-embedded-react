@@ -4,6 +4,44 @@ import ReactDOM from 'react-dom';
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import HostApplicationMain from "./HostApplicationMain";
 
+// ---------------------------------------------------------------------------------------------------------------------
+// The host application requires some custom HTTP headers to be added to all non-public
+// HTTP requests. This demo. is showing how to add a bunch of header.
+// ---------------------------------------------------------------------------------------------------------------------
+export const withCustomHeaders = false;
+
+withCustomHeaders && window.addEventListener("message", event => {
+
+    const data = event.data;
+
+    if (data.type === "ic3-custom-headers-request") {
+
+        const embeddedDiv = (data.ic3callerType === "div");
+        const ic3customheaders = data.ic3customheaders /* as specified in the URL */;
+
+        const target = !embeddedDiv
+            ? document.getElementById("ic3-iframe")?.["contentWindow"]
+            : window
+        ;
+
+        console.info('[CustomHeaders] demo <<< ic3-custom-headers-reply(' + ic3customheaders + ')');
+
+        target && target.postMessage({
+
+            type: "ic3-custom-headers-reply",
+
+            data: {
+                headers: {
+                    "IC3_USER_NAME": "ic3-demo",
+                    "IC3_ROLE_NAME": "administrator",
+                }
+            }
+
+        }, "*");
+
+    }
+})
+
 const theme = createTheme({
 
     palette: {

@@ -1,4 +1,9 @@
-import {DashboardsLoaderDivContext, IDashboardsLoaderDivParams, IReporting} from "@ic3/reporting-api";
+import {
+    DashboardsLoaderDivContext,
+    IDashboardsLoaderDivParams,
+    IDashboardsLoaderParams,
+    IReporting
+} from "@ic3/reporting-api";
 import React from "react";
 
 /**
@@ -13,8 +18,8 @@ export class DashboardsDivContext {
 
     private readonly context: DashboardsLoaderDivContext;
 
-    constructor(suffix?: string) {
-        this.context = new DashboardsLoaderDivContext(suffix);
+    constructor(options?: string | IDashboardsLoaderParams) {
+        this.context = new DashboardsLoaderDivContext(options);
     }
 
     public getBuildVersion() {
