@@ -27,15 +27,13 @@ const TIMESTAMP = new Date().getTime();
 
 export default function DemoAdmin() {
 
+    // -----------------------------------------------------------------------------------------------------------------
     // In a production environment the user would be authenticated by the host application and
-    // a HTTP reverse proxy would be taking care of passing credentials to icCube.
-
-    // But for the sake of simplicity and to make it work easily w/ the Webpack dev. server,
-    // icCube is being configured to accept ?ic3demo URL parameter meaning the ic3demo user
-    // is going to be used.
-
-    // Check the webpack.dev.js reverse proxy configuration (livedemo.icCube.com) to prevent
-    // any CORS issue.
+    // icCube would be configured to retrieve those credentials.
+    //
+    // For the sake of simplicity, the icCube server used by this demo is being configured to accept
+    // the ?ic3demo URL parameter meaning the configured ic3demo user is going to be used.
+    // -----------------------------------------------------------------------------------------------------------------
 
     const ic3configuration = "&ic3configuration=admin";
     const ic3customHeaders = withCustomHeaders ? "&ic3customHeaders=admin" : "";

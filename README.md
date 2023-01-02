@@ -1,6 +1,6 @@
-## ic3 Dashboards Integration
+## ic3 Dashboards Integration with React
 
-A working example for embedding an icCube Dashboards instance via an `iframe` or a `div`.
+A working example for embedding an icCube Dashboards instance via an `iframe` or a `div` in React.
 
 This example is showing how to use the icCube Dashboards API to drive the icCube Dashboards instance from a host
 Javascript/Typescript application:
@@ -16,7 +16,7 @@ This example is built using React 17.x but you can use React 18.x instead (see `
 
 ### Getting Started
 
-Clone that Git repository that is proposing a common Javascript/Typescript project using Webpack.
+Clone this Git repository that is proposing a common Javascript/Typescript project using Webpack.
 
 Use `npm` to install the dependencies:
 
@@ -30,8 +30,8 @@ The `package.json` file is containing common scripts:
 
 ### Develop
 
-This example starts a host application @ `localhost:4100` (see `webpack.dev.js` file) that is embedding and driving a
-bunch of dashboards available @ `livedemo.icCube.com` via an HTTP proxy setup in `webpack.dev.js`.
+This example starts a host application `@localhost:4100` (see `webpack.dev.js` file) that is embedding and driving a
+bunch of dashboards available `@livedemo.icCube.com` via an HTTP proxy setup in `webpack.dev.js`.
 
 See the self explained code for more details about using the public API.
 
@@ -39,5 +39,8 @@ See the self explained code for more details about using the public API.
 
 See this [page](https://github.com/ic3-software/ic3-reporting-api/blob/main/doc/embed/Overview.md)
 for a detailed documentation of the API.
+
+- ic3 Reporting API : [link](https://github.com/ic3-software/ic3-reporting-api)
+- Div/Frame Loader classes : [link](https://github.com/ic3-software/ic3-reporting-api/blob/main/src/Loader.ts)
 
 _
