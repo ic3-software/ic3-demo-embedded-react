@@ -1,6 +1,6 @@
 {
   "name": "@ic3/demo-embedded-iframe-react",
-  "version": "8.4.0-alpha.1",
+  "version": "8.4.0-alpha.2",
   "description": "icCube dashboards integration (React)",
   "homepage": "https://github.com/ic3-software/ic3-demo-embedded-react",
   "repository": "https://github.com/ic3-software/ic3-demo-embedded-react",
@@ -8,7 +8,7 @@
   "dependencies": {
     "@emotion/react": "11.10.6",
     "@emotion/styled": "11.10.6",
-    "@ic3/reporting-api-embedded": "file:../../ic3-reporting-api-embedded",
+    "@ic3/reporting-api-embedded": "8.4.0-alpha.2",
     "@mui/icons-material": "5.11.11",
     "@mui/material": "5.11.12",
     "react": "18.2.0",
