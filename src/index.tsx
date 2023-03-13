@@ -1,9 +1,8 @@
 import "./index.css";
 import * as React from "react";
-import ReactDOM from 'react-dom';
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import HostApplicationMain from "./HostApplicationMain";
-
+import {createRoot} from 'react-dom/client'
 // ---------------------------------------------------------------------------------------------------------------------
 // The host application requires some custom HTTP headers to be added to all non-public
 // HTTP requests. This demo. is showing how to add a bunch of header.
@@ -77,16 +76,14 @@ const theme = createTheme({
 
 } as any);
 
-ReactDOM.render(
-    (
-        <>
-            <CssBaseline/>
-            <ThemeProvider theme={theme}>
-                <HostApplicationMain/>
-            </ThemeProvider>
-        </>
-    ),
-    document.getElementById("root")
+const reactRoot = createRoot(document.getElementById("root")!);
+reactRoot.render(
+    <>
+        <CssBaseline/>
+        <ThemeProvider theme={theme}>
+            <HostApplicationMain/>
+        </ThemeProvider>
+    </>
 );
 
 

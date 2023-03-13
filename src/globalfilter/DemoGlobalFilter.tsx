@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {Button, ButtonGroup} from "@mui/material";
-import {IReportAppDefinition, IReportDefinition, IReporting, IReportParam} from '@ic3/reporting-api';
+import {IReportAppDefinition, IReportDefinition, IReporting, IReportParam} from '@ic3/reporting-api-embedded';
 import {IDashboardInfo} from "../standalone/DemoDashboards";
 import {DashboardsDiv} from "../common/DashboardsDiv";
 import {styled} from "@mui/material/styles";

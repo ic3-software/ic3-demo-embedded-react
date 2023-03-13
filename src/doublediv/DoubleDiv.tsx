@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {IReportDefinition, IReporting} from '@ic3/reporting-api';
+import {IReportDefinition, IReporting} from '@ic3/reporting-api-embedded';
 import {DashboardsDiv} from "../common/DashboardsDiv";
 import {styled} from "@mui/material/styles";
 import {Typography} from "@mui/material";

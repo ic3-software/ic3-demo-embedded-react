@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {DashboardsLoaderFrame, IReporting} from '@ic3/reporting-api';
+import {DashboardsLoaderFrame, IReporting} from '@ic3/reporting-api-embedded';
 
 interface DashboardsFrame {
 

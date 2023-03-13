@@ -3,7 +3,7 @@ import {
     IDashboardsLoaderDivParams,
     IDashboardsLoaderParams,
     IReporting
-} from "@ic3/reporting-api";
+} from "@ic3/reporting-api-embedded";
 import React from "react";
 
 /**

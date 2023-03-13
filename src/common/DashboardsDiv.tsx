@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {IReporting} from '@ic3/reporting-api';
+import {IReporting} from '@ic3/reporting-api-embedded';
 import {DashboardsDivReactContext} from "./DashboardsDivContext";
 
 interface DashboardsDiv {

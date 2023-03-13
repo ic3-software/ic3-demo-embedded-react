@@ -2,7 +2,7 @@ import React, {useMemo, useState} from 'react';
 import {IDashboardInfo, IDashboardInteractionProps} from "./DemoDashboards";
 import {styled} from "@mui/material/styles";
 import {Autocomplete, TextField, Typography} from "@mui/material";
-import {IEventContent, IReporting} from '@ic3/reporting-api';
+import {IEventContent, IReporting} from '@ic3/reporting-api-embedded';
 import {HostLogger} from '../HostLogger';
 
 const StyledDiv = styled("div")(({theme}) => ({

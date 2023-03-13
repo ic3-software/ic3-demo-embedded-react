@@ -10,9 +10,9 @@ Javascript/Typescript application:
 - open two dashboards that communicate to each other via events,
 - open the server admin. console.
 
-### React 17.x vs React 18.x
+### React 18.x
 
-This example is built using React 17.x but you can use React 18.x instead (see `package.json`).
+This example is built using React 18.x.
 
 ### Getting Started
 
@@ -37,10 +37,9 @@ See the self explained code for more details about using the public API.
 
 ### Documentation
 
-See this [page](https://github.com/ic3-software/ic3-reporting-api/blob/main/doc/embed/Overview.md)
+See this [page](https://github.com/ic3-software/ic3-reporting-api-embedded/blob/main/doc/Overview.md)
 for a detailed documentation of the API.
 
-- ic3 Reporting API : [link](https://github.com/ic3-software/ic3-reporting-api)
-- Div/Frame Loader classes : [link](https://github.com/ic3-software/ic3-reporting-api/blob/main/src/Loader.ts)
+- DIV/IFRAME Loader classes : [link](https://github.com/ic3-software/ic3-reporting-api-embedded/blob/main/src/Loader.ts)
 
 _

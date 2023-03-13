@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {Button, ButtonGroup, Typography} from "@mui/material";
-import {IReportDefinition, IReporting, IReportParam} from '@ic3/reporting-api';
+import {IReportDefinition, IReporting, IReportParam} from '@ic3/reporting-api-embedded';
 import {DASHBOARD_1_WAY} from "./Dashboard1way";
 import {DASHBOARD_1_WAY_DYNAMIC_QUERY} from "./Dashboard1wayDynamicQuery";
 import {DASHBOARD_2_WAY} from "./Dashboard2way";
