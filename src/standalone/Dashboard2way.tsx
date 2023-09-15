@@ -46,7 +46,7 @@ function continentUniqueName(continent: string) {
     return CONTINENT_UNIQUE_NAMES[CONTINENT_NAMES.indexOf(continent)];
 }
 
-export function handleContinents(setContinents: any, reporting: IReporting, continents: string[]) {
+export function handleContinents(setContinents: any, reporting: IReporting, continents: readonly string[]) {
 
     let value: IEventContent | null = null;
 
