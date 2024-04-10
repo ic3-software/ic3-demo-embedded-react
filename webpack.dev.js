@@ -12,13 +12,12 @@ module.exports = merge(common, {
 
     devServer: {
 
-        proxy: {
-            "/icCube": {
-                target: "https://livedemo.iccube.com/",
-                changeOrigin: true,
-                secure: false,
-            }
-        },
+        proxy: [{
+            context: ["/icCube"],
+            target: "https://livedemo.iccube.com/",
+            changeOrigin: true,
+            secure: false,
+        }],
 
         port: 4100,
         open: true,
