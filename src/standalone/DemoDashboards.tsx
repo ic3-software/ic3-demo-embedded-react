@@ -88,6 +88,13 @@ export interface IDashboardInteractionProps {
 
 }
 
+export interface IDashboardDefinition {
+
+    name: string;
+    path: string;
+
+}
+
 export interface IDashboardInfo {
 
     name: string;
@@ -115,7 +122,7 @@ export default function DemoDashboards() {
     // The icCube dashboards application as a IReporting instance.
     const [reporting, setReporting] = useState<IReporting>();
 
-    const [reportDef, setReportDef] = useState<IReportDefinition | null>();
+    const [reportDef, setReportDef] = useState<IDashboardDefinition | null>();
 
     const handleOpenDashboard = useCallback((path: string, params?: IReportParam[]) => {
 
@@ -125,9 +132,15 @@ export default function DemoDashboards() {
 
                 path, params,
 
+                disableDefaultSchemaAuthCheck: true,
+
                 onDefinition: (report: IReportDefinition) => {
                     HostLogger.info("Host", "open-report:" + report.getPath());
-                    setReportDef(report);
+
+                    // Does not keep a local copy of 'report' as it might contain a proxy
+                    // that will be revoked later.
+                    setReportDef({name: report.getName(), path: report.getPath()});
+
                 },
 
                 onError: (error) => {
@@ -162,7 +175,7 @@ export default function DemoDashboards() {
                 {DASHBOARDS.map((report, index) => {
                     return (
                         <Button key={index}
-                                disabled={!reporting || report.name === reportDef?.getName()}
+                                disabled={!reporting || report.name === reportDef?.name}
                                 variant={"outlined"}
                                 onClick={handleOpenDashboard(report.path, report.params)}
                                 title={report.openTooltip ?? "click to open the report"}
@@ -185,10 +198,10 @@ export default function DemoDashboards() {
 
         <>
             <Typography variant={"body2"} color={"primary"}>
-                {reportDef.getName()}
+                {reportDef.name}
             </Typography>
             <Typography variant={"body2"} color={"primary"}>
-                {reportDef.getPath()}
+                {reportDef.path}
             </Typography>
         </>
 
@@ -223,7 +236,7 @@ export default function DemoDashboards() {
 
     }, []);
 
-    const reportName = reportDef?.getName();
+    const reportName = reportDef?.name;
 
     const dashboardInteractions = useMemo(() => {
 
