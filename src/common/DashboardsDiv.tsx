@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {IReporting} from '@ic3/reporting-api-embedded';
+import {IDashboardsLoaderDivParams, IReporting, FilterPanelViewStorageFactory} from '@ic3/reporting-api-embedded';
 import {DashboardsDivReactContext} from "./DashboardsDivContext";
 
 interface DashboardsDiv {
@@ -11,6 +11,9 @@ interface DashboardsDiv {
     onReady: (ic3: IReporting) => void;
 
     autoResize?: boolean;
+
+    filterPanelViewStorageFactory?: FilterPanelViewStorageFactory;
+
 }
 
 
@@ -28,10 +31,11 @@ export function DashboardsDiv(props: DashboardsDiv) {
 
         if (refContainer.current) {
 
-            const options = {
+            const options: IDashboardsLoaderDivParams = {
                 uid,
                 container: refContainer.current,
-                resizingContainer: autoResize ? refContainer.current : undefined
+                resizingContainer: autoResize ? refContainer.current : undefined,
+                filterPanelViewStorageFactory: props.filterPanelViewStorageFactory
             }
 
             refContainer.current && context.loadLibsAndInitialize(options)
@@ -40,7 +44,7 @@ export function DashboardsDiv(props: DashboardsDiv) {
 
         }
 
-    }, [context, refContainer, setError, uid, onReady, autoResize]);
+    }, [context, refContainer, setError, uid, onReady, autoResize, props.filterPanelViewStorageFactory]);
 
     return <div className={className} ref={refContainer}>{error}</div>;
 }

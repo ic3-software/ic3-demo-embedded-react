@@ -2,7 +2,7 @@ import React, {useMemo, useState} from 'react';
 import {IDashboardInfo, IDashboardInteractionProps} from "./DemoDashboards";
 import {styled} from "@mui/material/styles";
 import {Autocomplete, TextField, Typography} from "@mui/material";
-import {IEventContent, IReporting} from '@ic3/reporting-api-embedded';
+import {IEventContent, IEventContentItem, IReporting} from '@ic3/reporting-api-embedded';
 import {HostLogger} from '../HostLogger';
 
 const StyledDiv = styled("div")(({theme}) => ({
@@ -76,11 +76,21 @@ function Interactions(props: IDashboardInteractionProps) {
     const {reporting} = props;
 
     const [continents, setContinents] = useState<string[]>(["Asia", "Europe", "North America"]);
-    const [years, setYears] = useState<IEventContent | null>();
+    const [years, setYears] = useState<IEventContentItem[] | null>();
 
     useMemo(() => {
 
-        reporting.onEvent("year", (value) => setYears(value));
+        reporting.onEvent("year", (value) => {
+
+            if(Array.isArray(value)) {
+                setYears(value);
+            } else if(value) {
+                setYears([value]);
+            } else {
+                setYears(null);
+            }
+
+        });
 
     }, [reporting]);
 

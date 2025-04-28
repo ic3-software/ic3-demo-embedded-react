@@ -1,13 +1,14 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {Button, ButtonGroup} from "@mui/material";
+import {Button, ButtonGroup, Typography} from "@mui/material";
 import {IReportAppDefinition, IReportDefinition, IReporting, IReportParam} from '@ic3/reporting-api-embedded';
 import {IDashboardInfo} from "../standalone/DemoDashboards";
 import {DashboardsDiv} from "../common/DashboardsDiv";
 import {styled} from "@mui/material/styles";
-import EmbeddedTypeSwitch, {EmbeddedType} from "../common/EmbeddedTypeSwitch";
+import EmbeddedTypeSwitch, {EmbeddedType, FilterPanelStorageType} from "../common/EmbeddedTypeSwitch";
 import {DashboardsFrame} from "../common/DashboardsFrame";
 import {HostLogger} from '../HostLogger';
 import {withCustomHeaders} from "../index";
+import FilterPanelViewsApiExample from "../extra/FilterPanelViewsApiExample";
 
 const StyledDiv = styled("div")(({theme}) => ({
 
@@ -38,9 +39,12 @@ const StyledDiv = styled("div")(({theme}) => ({
         flexDirection: "row",
         alignItems: "center",
 
+        gap: theme.spacing(2),
+
         paddingLeft: theme.spacing(4),
         paddingRight: theme.spacing(4),
 
+        color: "#fff"
     },
 
     "& .ic3-g-filter-payload": {
@@ -110,6 +114,7 @@ export default function DemoGlobalFilter() {
 
     const [version, setVersion] = useState<string>("loading...");
     const [embeddedType, setEmbeddedType] = useState<EmbeddedType>("div");
+    const [filterPanelStorage, setFilterPanelStorage] = useState<FilterPanelStorageType>(FilterPanelStorageType.BROWSER);
 
     const introduction = useMemo(() => (
 
@@ -126,6 +131,8 @@ export default function DemoGlobalFilter() {
     const buttons = useMemo(() => (
         <div className={"ic3-g-filter-buttons"}>
 
+            <Typography variant={'body1'}>Choose dashboard</Typography>
+
             <ButtonGroup size={"medium"} variant={"text"}>
                 {DASHBOARDS.map((report, index) => {
                     return (
@@ -136,6 +143,22 @@ export default function DemoGlobalFilter() {
                                 title={report.openTooltip ?? "click to open the report"}
                         >
                             {report.openCaption ?? report.name}
+                        </Button>
+                    )
+                })}
+            </ButtonGroup>
+
+            <Typography variant={'body1'}>Filter panel views storage type</Typography>
+
+            <ButtonGroup size={"medium"} variant={"text"}>
+                {Object.values(FilterPanelStorageType).map((storageType) => {
+                    return (
+                        <Button key={storageType}
+                                disabled={!reporting || !appDef}
+                                variant={"outlined"}
+                                onClick={() => setFilterPanelStorage(storageType)}
+                        >
+                            {storageType}
                         </Button>
                     )
                 })}
@@ -184,6 +207,10 @@ export default function DemoGlobalFilter() {
         });
 
     }, []);
+    
+    const viewStorage = React.useMemo(() => {
+        return filterPanelStorage === FilterPanelStorageType.CUSTOM ? new FilterPanelViewsApiExample() : undefined;
+    }, [filterPanelStorage])
 
     return (
         <StyledDiv>
@@ -196,7 +223,8 @@ export default function DemoGlobalFilter() {
                     iFrameBased
                         ? <DashboardsFrame containerId={"ic3-dashboards"} frameId={"ic3-iframe"} onReady={ic3ready}
                                            url={iFrameUrl}/>
-                        : <DashboardsDiv uid={"ic3-demo-global-filter"} onReady={ic3ready}/>
+                        : <DashboardsDiv uid={"ic3-demo-global-filter"} onReady={ic3ready} 
+                                         filterPanelViewStorageFactory={viewStorage}/>
                 }
             </div>
         </StyledDiv>

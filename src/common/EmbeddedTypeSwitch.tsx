@@ -3,6 +3,13 @@ import {FormControl, MenuItem, Select, Typography} from "@mui/material";
 
 export type EmbeddedType = "div" | "iframe";
 
+// Normally the filter panel views are stored in the users browser storage. You can build your custom storage with
+// the embedded API.
+export enum FilterPanelStorageType {
+    BROWSER = "browser",
+    CUSTOM = "custom"
+}
+
 export interface EmbeddedTypeSwitchProps {
 
     className: string;

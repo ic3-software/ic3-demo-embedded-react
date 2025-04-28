@@ -5,7 +5,7 @@ import HostApplicationMain from "./HostApplicationMain";
 import {createRoot} from 'react-dom/client'
 // ---------------------------------------------------------------------------------------------------------------------
 // The host application requires some custom HTTP headers to be added to all non-public
-// HTTP requests. This demo. is showing how to add a bunch of header.
+// HTTP requests. This demo shows how to add these headers.
 // ---------------------------------------------------------------------------------------------------------------------
 export const withCustomHeaders = false;
 
@@ -19,7 +19,7 @@ withCustomHeaders && window.addEventListener("message", event => {
         const ic3customheaders = data.ic3customheaders /* as specified in the URL */;
 
         const target = !embeddedDiv
-            ? document.getElementById("ic3-iframe")?.["contentWindow"]
+            ? (document.getElementById("ic3-iframe") as any)?.["contentWindow"]
             : window
         ;
 
@@ -36,7 +36,8 @@ withCustomHeaders && window.addEventListener("message", event => {
                 }
             }
 
-        }, "*");
+        }, document.location.origin);
+        // https://cwe.mitre.org/data/definitions/942.html
 
     }
 })
