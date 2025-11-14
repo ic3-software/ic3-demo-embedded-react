@@ -9,6 +9,8 @@ import {createRoot} from 'react-dom/client'
 // ---------------------------------------------------------------------------------------------------------------------
 export const withCustomHeaders = false;
 
+// Listen to the post message send by the icCube JS libraries.
+// The `type` of this message is `ic3-custom-headers-request`.
 withCustomHeaders && window.addEventListener("message", event => {
 
     const data = event.data;
@@ -18,6 +20,7 @@ withCustomHeaders && window.addEventListener("message", event => {
         const embeddedDiv = (data.ic3callerType === "div");
         const ic3customheaders = data.ic3customheaders /* as specified in the URL */;
 
+        // Post the reply to the window when embedding as DIV and to the iFrame otherwise.
         const target = !embeddedDiv
             ? (document.getElementById("ic3-iframe") as any)?.["contentWindow"]
             : window

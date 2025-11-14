@@ -7,6 +7,7 @@ import {styled} from "@mui/material/styles";
 import DoubleDiv from "./doublediv/DoubleDiv";
 import DemoAdmin from './admin/DemoAdmin';
 import {withCustomHeaders} from "./index";
+import BasicApp from "./app/BasicApp";
 
 const StyledDiv = styled("div")(({theme}) => ({
 
@@ -23,7 +24,7 @@ const StyledDiv = styled("div")(({theme}) => ({
     alignItems: "center",
 }));
 
-type Demo = "ADMIN_CONSOLE" | "STANDALONE_DASHBOARDS" | "APPLICATION" | "DOUBLE_DIV";
+type Demo = "ADMIN_CONSOLE" | "STANDALONE_DASHBOARDS" | "APPLICATION" | "DOUBLE_DIV" | "APP_EXAMPLE";
 
 export default function HostApplicationMain() {
 
@@ -62,6 +63,10 @@ export default function HostApplicationMain() {
         } else if (demo === "DOUBLE_DIV") {
 
             return <DoubleDiv/>;
+
+        } else if (demo === "APP_EXAMPLE") {
+
+            return <BasicApp/>;
 
         } else {
 
@@ -119,6 +124,19 @@ export default function HostApplicationMain() {
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     Demonstrate how to open the Admin. console (iFrame).
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
+
+                    <Card sx={{width: 500, margin: 1}}>
+                        <CardActionArea onClick={() => setDemo("APP_EXAMPLE")}>
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    Basic React application example
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    Basic setup for how to embed icCube via a div with React.
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
