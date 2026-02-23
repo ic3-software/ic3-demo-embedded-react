@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {IAppNotificationToken, IReporting} from '@ic3/reporting-api-embedded';
-import {Box, Button, CircularProgress, useTheme} from "@mui/material";
+import {Box, Button, CircularProgress} from "@mui/material";
+import { useTheme} from "@mui/material/styles";
 import CloseIcon from '@mui/icons-material/Close';
 import {IDashboardDefinition} from "./DemoDashboards";
 

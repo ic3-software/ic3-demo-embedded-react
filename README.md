@@ -3,7 +3,7 @@
 A working example for embedding an icCube Dashboards instance via an `iframe` or a `div` in React.
 
 This example is showing how to use the icCube Dashboards API to drive the icCube Dashboards instance from a host
-Javascript/Typescript application:
+JavaScript/TypeScript application:
 
 - open standalone dashboards,
 - open a dashboard application (e.g., global filter) and dashboards,
@@ -16,7 +16,7 @@ This example is built using React 18.x.
 
 ### Getting Started
 
-Clone this Git repository that is proposing a common Javascript/Typescript project using Webpack.
+Clone this Git repository that is proposing a common JavaScript/TypeScript project using Webpack.
 
 Use `npm` to install the dependencies:
 
