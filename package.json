@@ -1,12 +1,13 @@
 {
   "name": "@ic3/demo-embedded-iframe-react",
-  "version": "9.1.1",
+  "version": "9.2.0",
+  "license": "MIT",
   "description": "icCube dashboards integration (React)",
   "homepage": "https://github.com/ic3-software/ic3-demo-embedded-react",
   "repository": "https://github.com/ic3-software/ic3-demo-embedded-react",
   "private": true,
   "dependencies": {
-    "@ic3/reporting-api-embedded": "9.1.1",
+    "@ic3/reporting-api-embedded": "9.2.0",
     "react": "18.x",
     "react-dom": "18.x",
     "@mui/icons-material": "7.x",
@@ -36,9 +37,9 @@
     "style-loader": "4.0.0",
     "ts-loader": "9.5.4",
     "typescript": "5.8.3",
-    "webpack": "5.105.2",
-    "webpack-cli": "6.0.1",
-    "webpack-dev-server": "5.2.2",
+    "webpack": "5.105.4",
+    "webpack-cli": "7.0.2",
+    "webpack-dev-server": "5.2.3",
     "webpack-merge": "6.0.1"
   },
   "scripts": {
