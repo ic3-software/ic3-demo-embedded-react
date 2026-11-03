@@ -8,6 +8,7 @@ import DoubleDiv from "./doublediv/DoubleDiv";
 import DemoAdmin from './admin/DemoAdmin';
 import {withCustomHeaders} from "./index";
 import BasicApp from "./app/BasicApp";
+import DemoChatApp from "./standalone/DemoChatApp";
 
 const StyledDiv = styled("div")(({theme}) => ({
 
@@ -24,7 +25,7 @@ const StyledDiv = styled("div")(({theme}) => ({
     alignItems: "center",
 }));
 
-type Demo = "ADMIN_CONSOLE" | "STANDALONE_DASHBOARDS" | "APPLICATION" | "DOUBLE_DIV" | "APP_EXAMPLE";
+type Demo = "ADMIN_CONSOLE" | "STANDALONE_DASHBOARDS" | "APPLICATION" | "DOUBLE_DIV" | "APP_EXAMPLE" | "GLOBAL_CHAT";
 
 export default function HostApplicationMain() {
 
@@ -32,6 +33,10 @@ export default function HostApplicationMain() {
 
     const handleAdminConsoleClick = useCallback(() => {
         setDemo("ADMIN_CONSOLE");
+    }, []);
+
+    const handleChatClick = useCallback(() => {
+        setDemo("GLOBAL_CHAT");
     }, []);
 
     const handleStandaloneDashboardsClick = useCallback(() => {
@@ -51,6 +56,10 @@ export default function HostApplicationMain() {
         if (demo == "ADMIN_CONSOLE") {
 
             return <DemoAdmin/>;
+
+        } else if (demo == "GLOBAL_CHAT") {
+
+            return <DemoChatApp/>;
 
         } else if (demo == "STANDALONE_DASHBOARDS") {
 
@@ -72,6 +81,20 @@ export default function HostApplicationMain() {
 
             return (
                 <StyledDiv>
+
+                    <Card sx={{width: 500, margin: 1}}>
+                        <CardActionArea onClick={handleChatClick}>
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    Chat with Olie
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    Demonstrates how to open the chat application where users can chat with the data.
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
+
                     <Card sx={{width: 500, margin: 1}}>
                         <CardActionArea onClick={handleStandaloneDashboardsClick}>
                             <CardContent>
@@ -147,7 +170,7 @@ export default function HostApplicationMain() {
 
         }
 
-    }, [demo, handleApplicationClick, handleStandaloneDashboardsClick, handleDoubleDiv, handleAdminConsoleClick]);
+    }, [demo, handleChatClick, handleStandaloneDashboardsClick, handleApplicationClick, handleDoubleDiv, handleAdminConsoleClick]);
 
     // -----------------------------------------------------------------------------------------------------------------
     // In a production environment the user would be authenticated by the host application and

@@ -10,9 +10,9 @@ JavaScript/TypeScript application:
 - open two dashboards that communicate to each other via events,
 - open the server admin. console.
 
-### React 18.x
+### React 19.x
 
-This example is built using React 18.x.
+This example is built using React 19.x.
 
 ### Getting Started
 

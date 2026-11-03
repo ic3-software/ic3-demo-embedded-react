@@ -40,7 +40,10 @@ export function DashboardsDiv(props: DashboardsDiv) {
 
             refContainer.current && context.loadLibsAndInitialize(options)
                 .then(onReady)
-                .catch(reason => setError(reason));
+                .catch(reason => {
+                    console.error(reason);
+                    setError(reason)
+                });
 
         }
 
